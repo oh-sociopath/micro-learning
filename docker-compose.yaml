@@ -1,23 +1,31 @@
 version: '3.8'
 services:
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:15
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: microlearning
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: microlearning
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d microlearning" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
   app:
     build: .
     ports:
       - "3000:3000"
     depends_on:
-      - mysql
+      postgres:
+        condition: service_healthy
     environment:
-      DATABASE_URL: "mysql://user:password@mysql:3306/microlearning?schema=public"
+      DATABASE_URL: "postgresql://user:password@postgres:5432/microlearning?schema=public"
+#    volumes:
+#      - .:/usr/src/app
+#      - /usr/src/app/node_modules
 volumes:
-  mysql_data:
+  postgres_data:
