@@ -1,75 +1,54 @@
-## Description
+# Project Name
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+🚀 A brief 1-2 line description of your project.
 
-## Project setup
+## Prerequisites
 
+Before you begin, ensure you have the following installed:
+- [Docker](https://www.docker.com/) (v20.10+ recommended)
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- Available ports: `3000` (app) and `5432` (PostgreSQL)
+
+---
+
+## 🛠️ Setup & Installation
+
+### 1. Clone the repository
 ```bash
-$ npm install
+git clone <your-repo-url>
+cd <project-folder>
 ```
 
-## Compile and run the project
-
+### 2. Install dependencies
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
 
+### 3. Start Docker containers
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker compose up --build
 ```
 
-## Deployment
+_This will:_
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+* Spin up a PostgreSQL database (port 5432)
+* Start your application server (port 3000)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
+### 4. Run database migrations
+In a new terminal tab/window:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker compose exec app npx prisma migrate dev --name init
 ```
+(Replace init with your migration name)
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 🌟 Running the Application
+After successful setup:
 
-## Resources
+Access the app at: http://localhost:3000
 
-Check out a few resources that may come in handy when working with NestJS:
+PostgreSQL will be available at localhost:5432
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Postman
+you can import postman collection from `/postman-collection` directory from root of the project
