@@ -20,8 +20,6 @@ export class CoursesController {
         if (!req.user) {
             throw new UnauthorizedException('User not authenticated');
         }
-        console.log('req: ', req);
-        console.log('dto: ', body);
 
         return this.coursesService.createCourse(req.user.userId, body);
     }
