@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { QaService } from './qa.service';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../auth/enums/role.enum';
@@ -28,10 +28,10 @@ export class QaController {
         return this.qaService.askQuestion(req.user.userId, +lessonId, body.text);
     }
 
-    @Roles(Role.STUDENT)
+    @Roles(Role.INSTRUCTOR)
     @UseGuards(RolesGuard)
     @UseGuards(AuthGuard('jwt'))
-    @Post('questions/:id/answer')
+    @Get('questions/:id/answer')
     answerQuestion(
         @Req() req: Request,
         @Param('id') questionId: string,
