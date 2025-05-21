@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './users/user.module';
 import { CoursesModule } from './courses/courses.module';
 import { QaModule } from './qa/qa.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -12,11 +14,22 @@ import { QaModule } from './qa/qa.module';
       isGlobal: true,
       envFilePath: '.env'
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 600, // 10 m
+      limit: 100, // max requests per ip
+    }]),
     AuthModule,
     PrismaModule,
     UserModule,
     CoursesModule,
     QaModule
-  ]
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
+
 })
 export class AppModule {}
