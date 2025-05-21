@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
@@ -7,6 +7,8 @@ import { CoursesModule } from './courses/courses.module';
 import { QaModule } from './qa/qa.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { ArchiveQuestionsTask } from './tasks/archive-questions.task';
+import { LoggerMiddleware } from './middlware/logger.middlware';
 
 @Module({
   imports: [
@@ -29,7 +31,12 @@ import { APP_GUARD } from '@nestjs/core';
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    ArchiveQuestionsTask
   ],
 
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
